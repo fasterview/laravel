@@ -37,4 +37,10 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    // Relationship with organization that user owns
+    public function orgs(){
+        return $this->hasMany("App\Org", "user_id", "id");
+    }
 }
