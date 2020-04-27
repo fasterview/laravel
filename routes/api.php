@@ -17,3 +17,12 @@ use Illuminate\Support\Facades\Route;
 
 // Register new user
 Route::post("/oauth/register", "UserController@register");
+
+
+Route::resource("organization", "OrgController", [
+    "middleware"    => ["auth:api"],
+    "only" => ["store", "show", "update", "destroy"],
+    "parameters" => [
+        "organization" => "org"
+    ]
+]);
