@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 // Register new user
 Route::post("/oauth/register", "UserController@register");
 
-
+// ============ Organization ============
 Route::resource("organization", "OrgController", [
     "middleware"    => ["auth:api"],
     "only" => ["store", "show", "update", "destroy"],
@@ -26,3 +26,14 @@ Route::resource("organization", "OrgController", [
         "organization" => "org"
     ]
 ]);
+
+
+// ============ Interviews ============
+Route::group(["middleware" => "auth:api"], function(){
+    
+    Route::post("/{org}/interview", "InterviewController@store");
+    Route::put("/interview/{interview}", "InterviewController@update");
+    Route::get("/interview/{interview}", "InterviewController@show");
+    Route::delete("/interview/{interview}", "InterviewController@destroy");
+
+});

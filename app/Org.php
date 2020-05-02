@@ -31,4 +31,9 @@ class Org extends Model
     public function user(){
         return $this->belongsTo("App\User", "user_id", "id");
     }
+
+    // Relationship with intervies
+    public function interviews(){
+        return $this->hasMany("App\Org", "org_id", "id");
+    }
 }
