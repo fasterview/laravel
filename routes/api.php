@@ -36,4 +36,9 @@ Route::group(["middleware" => "auth:api"], function(){
     Route::get("/interview/{interview}", "InterviewController@show");
     Route::delete("/interview/{interview}", "InterviewController@destroy");
 
+
+    // Submits
+    Route::post("/interview/{interview}/submit", "SubmitController@submit");
+    
+
 });
