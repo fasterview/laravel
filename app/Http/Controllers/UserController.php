@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Passport\Client;
@@ -62,5 +63,15 @@ class UserController extends Controller
         );
     
         return \Route::dispatch($token);
+    }
+
+
+    /**
+     * Send loggedin user data
+     */
+    public function me(){
+        $user = Auth::user();
+
+        return response()->json($user);
     }
 }

@@ -18,6 +18,13 @@ use Illuminate\Support\Facades\Route;
 // Register new user
 Route::post("/oauth/register", "UserController@register");
 
+// Get user loggedin user data
+Route::get("/me", "UserController@me")
+            ->middleware("auth:api")
+            ->name("me");
+
+
+
 // ============ Organization ============
 Route::resource("organization", "OrgController", [
     "middleware"    => ["auth:api"],
