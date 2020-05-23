@@ -10,13 +10,17 @@ use Illuminate\Support\Facades\Validator;
 class OrgController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Dispaly onganization for logged in user.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        //
+        $orgs = Auth::user()->orgs;
+
+        return response()->json([
+            "organizations"  => $orgs
+        ]);
     }
 
 
