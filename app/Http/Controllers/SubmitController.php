@@ -22,13 +22,13 @@ class SubmitController extends Controller
      */
     public function submit(Request $request, Interview $interview)
     {
-
         // Validate the request
         $results = Validator::make($request->all(), [
-            'video' => 'required|file|mimes:mp4,mov,ogg,qt',
+            'video' => 'required|file|mimetypes:video/mp4,video/mpeg,video/x-matroska,video/x-flv,video/quicktime,video/x-msvideo,video/x-ms-wmv,video/x-m4v,video/3gpp,video/3gpp2',
             "questions" => "required|array",
             "questions.*.time"    => "required|numeric|min:0",
-        ]);
+    	]);
+
 
         $questions = $request->questions;
 
