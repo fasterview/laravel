@@ -27,4 +27,5 @@ class Interview extends Model
     public function users(){
         return $this->belongsToMany("App\User", "submits", "interview_id", "user_id");
     }
+
 }

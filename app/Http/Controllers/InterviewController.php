@@ -89,6 +89,7 @@ class InterviewController extends Controller
     public function show(Interview $interview)
     {
         $interview->load("org");
+        $interview->submitted = $interview->submits()->where("user_id", Auth::id())->exists();
         
         return response()->json([
             "interview" => $interview
