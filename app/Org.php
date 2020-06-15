@@ -40,6 +40,11 @@ class Org extends Model
 
     // Relationship with intervies
     public function interviews(){
-        return $this->hasMany("App\Org", "org_id", "id");
+        return $this->hasMany("App\Interview", "org_id", "id");
+    }
+
+    // Relationship with submits
+    public function submits(){
+        return $this->hasManyThrough("App\Submit", "App\Interview", "org_id", "interview_id");
     }
 }

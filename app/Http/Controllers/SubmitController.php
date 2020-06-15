@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Interview;
+use App\Org;
 use App\Submit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -91,80 +92,25 @@ class SubmitController extends Controller
         ], 200);
     }
 
-
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Return submits for specified org
      */
-    public function index()
-    {
-        //
+    public function org(Request $request, Org $org){
+
+        if(!Auth::check() || Auth::id() != $org->user_id){
+            return response()->json([
+                "errors"    => [
+                    "forbidden"
+                ]
+            ]);
+        }
+
+
+        $submits = $org->submits()->with(["interview", "user"])->orderBy("created_at", "DESC")->paginate( is_numeric($request->per_page) ? $request->per_page : 10);
+
+        return response()->json($submits);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Submit  $submit
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Submit $submit)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Submit  $submit
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Submit $submit)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Submit  $submit
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Submit $submit)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Submit  $submit
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Submit $submit)
-    {
-        //
-    }
+    
 }

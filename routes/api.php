@@ -47,6 +47,7 @@ Route::group(["middleware" => "auth:api"], function(){
 
     // Submits
     Route::post("/interview/{interview}/submit", "SubmitController@submit");
+    Route::get("/organization/{org}/submits", "SubmitController@org");
     
 
 });
