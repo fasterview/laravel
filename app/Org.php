@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
+use DateTimeInterface;
 use Illuminate\Support\Facades\Auth;
 
 class Org extends Model
@@ -46,5 +47,16 @@ class Org extends Model
     // Relationship with submits
     public function submits(){
         return $this->hasManyThrough("App\Submit", "App\Interview", "org_id", "interview_id");
+    }
+
+     /**
+     * Prepare a date for array / JSON serialization.
+     *
+     * @param  \DateTimeInterface  $date
+     * @return string
+     */
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date->format('d F y D g:i A');
     }
 }
