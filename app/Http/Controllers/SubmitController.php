@@ -106,7 +106,15 @@ class SubmitController extends Controller
         }
 
 
-        $submits = $org->submits()->with(["interview", "user"])->orderBy("created_at", "DESC")->paginate( is_numeric($request->per_page) ? $request->per_page : 10);
+        $submits = $org->submits()
+                        ->with(["interview", "user"])
+                        ->orderBy("created_at", "DESC")
+                        ->paginate( is_numeric($request->per_page) ? $request->per_page : 10);
+
+        $submits->getCollection()->transform(function($submit){
+            $submit->video = url(Storage::url($submit->video));
+            return $submit;
+        });
 
         return response()->json($submits);
     }
