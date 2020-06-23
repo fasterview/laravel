@@ -120,5 +120,43 @@ class SubmitController extends Controller
     }
 
 
+    /**
+     * Display the submits from spcified interview
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Interview $interview
+     * @return \Illuminate\Http\Response
+     */
+    public function interview(Request $request, Interview $interview){
+        // Check if the user is the owner
+        $org = $interview->org;
+        
+        if(!$org->is_owner){
+            return response()->json([
+                "errors"    => [
+                    "Unauthorized for this resoruce"
+                ]
+            ]);
+        }
+
+        $submits = $interview->submits()
+                        ->with(["interview", "user"])
+                        ->orderBy("created_at", "DESC")
+                        ->paginate( is_numeric($request->per_page) ? $request->per_page : 10);
+
+        $submits->getCollection()->transform(function($submit){
+            $submit->video = url(Storage::url($submit->video));
+            return $submit;
+        });
+
+        return response()->json([
+            "submits"   => $submits,
+            "org"   => $org,
+            "interview" => $interview
+        ]);
+
+
+    }
+
     
 }
