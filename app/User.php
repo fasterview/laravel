@@ -51,7 +51,8 @@ class User extends Authenticatable
      * Get the full path for the profile picture
      */
     public function getProfilePicAttribute($value){
-        return url(Storage::url($this->attributes['pic']));
+        
+        return $this->attributes['pic'] ? url(Storage::url($this->attributes['pic'])) : null;
     }
 
 
