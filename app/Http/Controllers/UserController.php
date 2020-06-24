@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Passport\Client;
 
@@ -71,6 +73,44 @@ class UserController extends Controller
      */
     public function me(){
         $user = Auth::user();
+
+        return response()->json($user);
+    }
+
+
+    /**
+     * Change user settinsg
+     */
+    public function settings(Request $request){
+
+        $validate = Validator::make($request->all(), [
+            "name" => "bail|required|string|min:3|max:15",
+            "image" => "nullable|image|max:4096",
+        ]);
+
+        if($validate->fails()){
+            return response()->json([
+                "errors"    => $validate->errors()
+            ], 400);
+        }
+
+        $user = Auth::user();
+
+        // Upload the image if exsits
+        $filePath = $user->pic;
+        
+        if($request->file("image")){
+            $filePath = $request->image->store("public/images");
+            
+            // Delete the old one
+            Storage::delete($user->pic);
+        }
+
+        // Update information
+        $user->name = $request->name;
+        $user->pic = $filePath;
+
+        $user->save();
 
         return response()->json($user);
     }

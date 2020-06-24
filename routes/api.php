@@ -24,6 +24,11 @@ Route::get("/me", "UserController@me")
             ->name("me");
 
 
+// ============ User Settings ============
+Route::group(["middleware" => "auth:api"], function(){
+    Route::post("/settings", "UserController@settings")->name("user.settings");
+});
+
 
 // ============ Organization ============
 Route::resource("organization", "OrgController", [
