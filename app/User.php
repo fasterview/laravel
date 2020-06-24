@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
@@ -26,7 +27,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token', 'email_verified_at', 'created_at', 'updated_at'
+        'password', 'remember_token', 'email_verified_at', 'created_at', 'updated_at', 'pic'
     ];
 
     /**
@@ -37,6 +38,21 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Attribute to be appended while serializing
+     */
+    protected $appends = [
+        "profile_pic"
+    ];
+
+
+    /**
+     * Get the full path for the profile picture
+     */
+    public function getProfilePicAttribute($value){
+        return url(Storage::url($this->attributes['pic']));
+    }
 
 
     // Relationship with organization that user owns
