@@ -114,4 +114,36 @@ class UserController extends Controller
 
         return response()->json($user);
     }
+
+
+    /**
+     * Change authenticated user password
+     */
+    public function password(Request $request){
+        
+        $request->validate([
+            "old_password" => "required|min:6",
+            "new_password" => "required|min:6|confirmed"
+        ]);
+        $user = Auth::user();
+
+        if( !Hash::check($request->old_password, $user->password)){
+            return response()->json([
+                "errors"    => [
+                    "Wrong password" . " " . $request->old_password
+                ]
+            ], 401);
+        }
+
+
+        // Change user password
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        return response()->json([
+            "success"   => true
+        ], 200);
+    }
+
+
 }
