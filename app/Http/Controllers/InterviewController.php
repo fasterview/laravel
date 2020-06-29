@@ -71,6 +71,7 @@ class InterviewController extends Controller
         $interview->role = $request->role;
         $interview->org_id = $org->id;
         $interview->description = $request->description ?? "";
+        $interview->require_cv = $org->require_cv ? true : false;
 
         $interview->save();
 
@@ -149,6 +150,7 @@ class InterviewController extends Controller
         $interview->org_id = $org->id;
         $interview->description = $request->description ?? "";
         $interview->active  = !!$request->active;
+        $interview->require_cv = $org->require_cv ? true : false;
 
         $interview->save();
 
@@ -177,7 +179,7 @@ class InterviewController extends Controller
             ], 401);
         }
 
-        $deleted = $interview->delete();
+        $deleted = $interview->softDeletes();
 
         return response()->json([
             "success"   => $deleted,
