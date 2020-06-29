@@ -19,6 +19,8 @@ class CreateInterviewsTable extends Migration
             $table->boolean("active")->default(true);
             $table->text("description");
             $table->string("role");
+            $table->boolean("require_cv")->default(false);
+            $table->softDeletes();
             $table->unsignedBigInteger("org_id");
             $table->foreign("org_id")->references("id")->on("orgs")->onDelete("CASCADE");
             $table->timestamps();

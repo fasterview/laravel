@@ -131,7 +131,7 @@ class SubmitController extends Controller
         // Check if the user is the owner
         $org = $interview->org;
         
-        if(!$org->is_owner){
+        if(!$org->is_owner || !$interview->active){
             return response()->json([
                 "errors"    => [
                     "Unauthorized for this resoruce"

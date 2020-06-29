@@ -71,6 +71,7 @@ class InterviewController extends Controller
         $interview->role = $request->role;
         $interview->org_id = $org->id;
         $interview->description = $request->description ?? "";
+        $interview->require_cv = $request->require_cv ? true : false;
 
         $interview->save();
 
@@ -149,6 +150,7 @@ class InterviewController extends Controller
         $interview->org_id = $org->id;
         $interview->description = $request->description ?? "";
         $interview->active  = !!$request->active;
+        $interview->require_cv = $request->require_cv ? true : false;
 
         $interview->save();
 
