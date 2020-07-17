@@ -42,6 +42,6 @@ class Submit extends Model
     }
 
     public function getCvFileAttribute(){
-        return $this->attributes['cv'] ? Storage::url($this->attributes['cv']) : null;
+        return $this->attributes['cv'] ? url(Storage::url($this->attributes['cv'])) : null;
     }
 }
