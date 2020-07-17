@@ -4,6 +4,7 @@ namespace App;
 
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Submit extends Model
 {
@@ -11,7 +12,12 @@ class Submit extends Model
                 $id = "id",
                 $casts = [
                     "questions" => "array"
-                ];
+                ],
+                $hidden = [ "cv" ];
+
+    protected   $appends = [
+        "cv_file"
+    ];
     
     // Relationship with user
     public function user(){
@@ -33,5 +39,9 @@ class Submit extends Model
     protected function serializeDate(DateTimeInterface $date)
     {
         return $date->format('d F y D g:i A');
+    }
+
+    public function getCvFileAttribute(){
+        return $this->attributes['cv'] ? Storage::url($this->attributes['cv']) : null;
     }
 }

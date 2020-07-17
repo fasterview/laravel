@@ -27,6 +27,7 @@ class SubmitController extends Controller
         $results = Validator::make($request->all(), [
             'video' => 'required|file|mimetypes:video/mp4,video/mpeg,video/x-matroska,video/x-flv,video/quicktime,video/x-msvideo,video/x-ms-wmv,video/x-m4v,video/3gpp,video/3gpp2',
             "questions" => "required|array",
+            "cv" => "nullable|file|mimes:pdf",
             "questions.*.time"    => "required|numeric|min:0",
     	]);
 
@@ -82,6 +83,7 @@ class SubmitController extends Controller
         $submit->interview_id = $interview->id;
         $submit->questions = $questions;
         $submit->video = $videoPath;
+        $submit->cv = $request->cv ? $request->cv->store("public/cv") : null;
 
         $submit->save();
 
