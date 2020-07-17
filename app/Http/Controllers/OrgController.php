@@ -108,6 +108,24 @@ class OrgController extends Controller
     }
 
     /**
+     * Interviews
+     */
+    public function interviews(Org $org){
+        if(Auth::id() != $org->user_id){
+            return response()->json([
+                "errors"    => [
+                    "Unauthorized"
+                ]
+            ], 401);
+        }
+
+        $interviews = $org->interviews()->paginate();
+
+        return response()->json($interviews);
+    }
+
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Org  $org

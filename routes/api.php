@@ -40,6 +40,7 @@ Route::resource("organization", "OrgController", [
     ]
 ]);
 Route::get("organization", "OrgController@index")->middleware("auth:api");
+Route::get("organization/{org}/interviews", "OrgController@interviews")->middleware("auth:api");
 
 
 // ============ Interviews ============
