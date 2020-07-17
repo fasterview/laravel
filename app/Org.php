@@ -34,6 +34,13 @@ class Org extends Model
         return $this->belongsTo("App\User", "user_id", "id");
     }
 
+    /**
+     * Relationship with users
+     */
+    public function users(){
+        return $this->belongsToMany("App\User", "org_user");
+    }
+
     // Is owner attribute
     public function getIsOwnerAttribute(){
         return $this->attributes['user_id'] == Auth::user()->id;

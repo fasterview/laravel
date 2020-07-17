@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Interview;
 use App\Org;
+use App\Submit;
+use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -124,6 +127,51 @@ class OrgController extends Controller
         return response()->json($interviews);
     }
 
+    /**
+     * Add or remove user from organization
+     */
+    public function user(Request $request, Org $org, Interview $interview){
+        // Validate the request
+        $results = Validator::make($request->all(), [
+            "user_id" => "required|numeric|exists:users,id",
+            "status" => [
+                "required",
+                Rule::in(['accepted', 'rejected'])
+            ]
+        ]);
+
+        
+        if($results->fails()){
+            return response()->json([
+                "errors"    => $results->errors()
+            ], 401);
+        }
+        
+        if($org->user_id != Auth::id() && $interview->org_id == $org->id){
+            return response()->json([
+                "errors"    => [
+                    "Unauthorized"
+                ]
+            ], 401);
+        }
+
+        $submit = Submit::where("interview_id", $interview->id)
+                            ->where("user_id", $request->user_id)->first();
+
+        $submit->status = $request->status;
+        $submit->save();
+
+
+        $request->status == "accepted" ? 
+                    $org->users()->syncWithoutDetaching([$request->user_id => ["role" => $submit->interview->role]]) :
+                    $org->users()->detach($request->user_id);
+
+        
+
+        return response()->json([
+            "success"   => true,
+        ],201);
+    }
 
     /**
      * Remove the specified resource from storage.

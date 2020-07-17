@@ -61,6 +61,13 @@ class User extends Authenticatable
         return $this->hasMany("App\Org", "user_id", "id");
     }
 
+    /**
+     * Relationship with orgs that user work on
+     */
+    public function workingOrgs(){
+        return $this->belongsToMany("App\User", "org_user");
+    }
+
 
     // Relationship with submits
     public function submits(){
