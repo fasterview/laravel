@@ -86,6 +86,7 @@ class UserController extends Controller
         $validate = Validator::make($request->all(), [
             "name" => "bail|required|string|min:3|max:15",
             "image" => "nullable|image|max:4096",
+            "bio" => "nullable|string|max:500",
         ]);
 
         if($validate->fails()){
@@ -109,6 +110,7 @@ class UserController extends Controller
         // Update information
         $user->name = $request->name;
         $user->pic = $filePath;
+        $user->bio = $request->bio;
 
         $user->save();
 
