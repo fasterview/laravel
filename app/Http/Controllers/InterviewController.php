@@ -135,7 +135,7 @@ class InterviewController extends Controller
             "questions.*.title"   => "required|string|min:8|max:100",
             "questions.*.time"    => "required|numeric|min:1|max:5",
             "role"    => "required|string|min:3|max:30",
-            "descripotion" => "nullable|min:50",
+            "descripotion" => "nullable|min:20",
         ]);
 
         if($results->fails()){  // Bad request error
